@@ -47,10 +47,10 @@ function App() {
   }
 
   function importData(filename: string) {
-    api.get(`upload/${filename}`)
+    api.get(`upload/${filename}?page=${1}&list=${100}`)
       .then(response => {
-        const cols = Object.keys(response.data[0])
-        const data = response.data
+        const cols = Object.keys(response.data.data[0])
+        const data = response.data.data
         setCurrentData({ cols, data });
         setContent('data')
 
@@ -147,7 +147,7 @@ function App() {
         <Content content="data" display={content}  >
           <h3> Data </h3>
           <hr />
-          <table className="table table-striped table-hover w-100">
+          <table className="table table-striped table-hover w-100 table-responsive">
             <thead className="thead-default">
               <tr>
                 {
