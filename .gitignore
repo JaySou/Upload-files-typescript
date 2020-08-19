@@ -32,5 +32,7 @@
 /backend/.vscode
 /backend/dist
 /backend/yarn.lock
+/backend/src/uploads/*
 
 .vscode
+
