@@ -8,6 +8,7 @@ import NavItem from './components/NavItem';
 import Content from './components/Content';
 
 import api from './services/api';
+import Table from './components/Table';
 
 type TypeContent = 'upload' | 'history' | 'data'
 
@@ -19,13 +20,23 @@ interface DataHistory {
   extension: string;
 }
 
+interface Pagination {
+  pages: number;
+  current: number;
+  next: number;
+  preview: number;
+  list: number;
+}
+
 
 function App() {
 
   const [content, setContent] = useState<TypeContent>("upload");
   const [file, setFile] = useState<FormData>();
   const [history, setHistory] = useState<DataHistory[]>([]);
-  const [currentData, setCurrentData] = useState<{ cols: string[], data: any[] }>({ cols: [], data: [] });
+  const [currentData, setCurrentData] = useState<{ title: string, columns: any[], data: any[] }>({ title: '', columns: [], data: [] });
+  const [pagination, setPagination] = useState<Pagination>({list: 50, pages: 0, current: 1,  next: 0, preview: 0})
+  const [currentFileName, setCurrentFileName] = useState('');
 
   function importHistory() {
     api.get('upload')
@@ -46,12 +57,14 @@ function App() {
       .then(() => setContent("history"))
   }
 
-  function importData(filename: string) {
-    api.get(`upload/${filename}?page=${1}&list=${100}`)
-      .then(response => {
-        const cols = Object.keys(response.data.data[0])
-        const data = response.data.data
-        setCurrentData({ cols, data });
+  function importData(filename: string, page: number = 1) {
+    api.get(`upload/${filename}?page=${page}&list=${pagination.list}`)
+      .then(response => response.data)
+      .then(data => {
+        const cols = Object.keys(data.data[0]).map(col => ({ title: col, field: col }))
+        setCurrentData({ title: filename, columns: cols, data: data.data });
+        setPagination({current: data.current, list: pagination.list, next: data.next, preview: data.preview, pages: data.pages})
+        setCurrentFileName(filename);
         setContent('data')
 
       })
@@ -93,8 +106,8 @@ function App() {
       {/*  Content Upload */}
       <div className="container d-flex align-items-center justify-content-center align-self-center mb-5">
         <Content content="upload" display={content}>
-        <h3> Upload </h3>
-        <hr />
+          <h3> Upload </h3>
+          <hr />
           <form onSubmit={handleUploadFile}>
             <div className="form-group">
               <label htmlFor="exampleFormControlFile1"> Escolha o Arquivo <b>.xlsx</b></label>
@@ -143,30 +156,17 @@ function App() {
       </div>
 
       {/*  Content Data */}
-      <div className="container mb-5">
+      <div className="container mb-5" style={{ marginTop: -50}}>
         <Content content="data" display={content}  >
-          <h3> Data </h3>
-          <hr />
-          <table className="table table-striped table-hover w-100 table-responsive">
-            <thead className="thead-default">
-              <tr>
-                {
-                  currentData.cols.map((col, i) => <td key={`head-${i}`}> {col} </td>)
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {
-                currentData.data.map((item, i) => (
-                  <tr key={`row-${i}`}>
-                    {
-                      currentData.cols.map((col, x) => <td key={`cel-${x}`}> {item[col]} </td>)
-                    }
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+            <Table 
+              columns={currentData.columns} 
+              data={currentData.data} 
+              title={currentData.title} 
+              atualPage={pagination.current}
+              finishPage={pagination.pages}
+              handleClickNext={() => importData(currentFileName, pagination.next)}
+              handleClickPreview={() => importData(currentFileName, pagination.preview)}
+            />
         </Content>
       </div>
     </>
