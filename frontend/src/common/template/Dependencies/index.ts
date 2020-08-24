@@ -5,7 +5,6 @@ import 'admin-lte/dist/js/adminlte.min';                                       /
 
 /** Import CSS dependencies */
 import 'admin-lte/plugins/fontawesome-free/css/all.min.css';                   /** fontawesome */
-import 'ionicons/css/ionicons.min.css';                                        /** Ionicons */
 import 'admin-lte/dist/css/adminlte.min.css';                                  /** AdminLTE */
 
 
