@@ -36,7 +36,7 @@ class UploadController {
       const page = Number(req.query.page) || 1
       const list = Number(req.query.list) || 100
 
-      const file = path.join(__dirname, '..', '..', 'uploads', filename);
+      const file = path.resolve(__dirname, '..', '..', 'uploads', filename);
       const workbook = xlsx.readFile(file)
       const sheetName = workbook.SheetNames[0]
       const dtJson = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);

@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import moment from 'moment';
 
 export default {
-  dest: path.resolve(__dirname, '..', 'temp'),
+  dest: path.resolve(__dirname, '..', 'uploads'),
   storage: multer.diskStorage({
     destination: (req: any, file: any, call: any) => {
       call(null, path.resolve(__dirname, '..', 'uploads'))
