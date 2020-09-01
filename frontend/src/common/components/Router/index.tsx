@@ -46,22 +46,10 @@ export const RedirectWrapper: React.FC<RedirectProps> = props => {
 }
 
 
-interface LinkWrapperProps extends NavLinkProps {
-  handleActiveLink: () => void;
-}
-
-export const LinkWrapper: React.FC<LinkWrapperProps> = props => {
+export const LinkWrapper: React.FC<NavLinkProps> = props => {
 
   return (
-    <NavLink 
-    isActive={(_, location) => {
-      if(location.pathname !== props.to){
-        return false
-      }
-      props.handleActiveLink();
-      return true
-    }}
-    {...props} >
+    <NavLink {...props} >
       {props.children}
     </NavLink>
   );

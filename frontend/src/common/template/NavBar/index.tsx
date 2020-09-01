@@ -4,11 +4,7 @@ import React from 'react';
 import NavItem from '../NavItem';
 
 
-interface NavBarProps {
-  handleSetTitle: (value: string) => void
-}
-
-const NavBar: React.FC<NavBarProps> = props => {
+const NavBar: React.FC = props => {
   return (
 
     <nav
@@ -35,9 +31,9 @@ const NavBar: React.FC<NavBarProps> = props => {
 
           <div className="collapse navbar-collapse order-3" id="navbarCollapse">
             <ul className="navbar-nav">
-                <NavItem path="/upload" title="Upload File" handleSetTitle={props.handleSetTitle}> Upload </NavItem>
-                <NavItem path="/history" title="Upload History" handleSetTitle={props.handleSetTitle}> History </NavItem>
-                <NavItem path="/file-data" title="Upload Data File" handleSetTitle={props.handleSetTitle}> File Data </NavItem>
+                <NavItem path="/upload"  > Upload </NavItem>
+                <NavItem path="/history"  > History </NavItem>
+                <NavItem path="/file-data" > File Data </NavItem>
             </ul>
           </div>
         </div>

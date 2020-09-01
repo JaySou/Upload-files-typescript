@@ -5,8 +5,6 @@ import { LinkWrapper } from '../../components/Router'
 
 interface NavItemProps {
   path: string;
-  title: string;
-  handleSetTitle: (value: string) => void;
 }
 
 const NavItem: React.FC<NavItemProps> = props => {
@@ -15,7 +13,6 @@ const NavItem: React.FC<NavItemProps> = props => {
       <LinkWrapper 
         to={props.path}
         className="nav-link"
-        handleActiveLink={() => props.handleSetTitle(props.title)}
       >
         {props.children}
       </LinkWrapper>
